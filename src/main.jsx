@@ -3,11 +3,11 @@ import {createRoot} from "react-dom/client";
 import "./style.css";
 
 const apps=[
- {id:"passenger",label:"Passenger App",tag:"DEMAND",desc:"Book on-demand rides, regular routes and explore MILGI mobility.",port:5181,tone:"pink",stats:["On-demand","Regular routes","Village mode"]},
- {id:"partner",label:"Partner App",tag:"SUPPLY",desc:"Bring existing local transport online, receive rides and manage routes and fleet.",port:5182,tone:"blue",stats:["Rides","Routes","Fleet"]},
- {id:"admin",label:"Admin Control Center",tag:"NETWORK",desc:"See rides, partners, fleet, routes, institutions and network health.",port:5183,tone:"green",stats:["Live rides","Connected fleet","Institutions"]}
+ {id:"passenger",label:"Passenger App",tag:"DEMAND",desc:"Book on-demand rides, regular routes and explore MILGI mobility.",url:"https://milgi-passenger-demo-iu56.vercel.app/",tone:"pink",stats:["On-demand","Regular routes","Village mode"]},
+ {id:"partner",label:"Partner App",tag:"SUPPLY",desc:"Bring existing local transport online, receive rides and manage routes and fleet.",url:"https://milgi-partner-demo.vercel.app/",tone:"blue",stats:["Rides","Routes","Fleet"]},
+ {id:"admin",label:"Admin Control Center",tag:"NETWORK",desc:"See rides, partners, fleet, routes, institutions and network health.",url:"https://milgi-admin-demo.vercel.app/",tone:"green",stats:["Live rides","Connected fleet","Institutions"]}
 ];
-const url=(port)=>`http://localhost:${port}`;
+
 function App(){
  const [view,setView]=useState(null);
  if(view) return <Detail app={apps.find(a=>a.id===view)} back={()=>setView(null)}/>;
@@ -22,5 +22,26 @@ function App(){
   <footer><b>MILGI</b><span>Interactive product prototype · Investor presentation</span></footer>
  </div>
 }
-function Detail({app,back}){return <div className="site detail"><nav><button className="back" onClick={back}>← MILGI Demo</button><div className="navtag">{app.tag}</div></nav><main className="detailmain"><div className={`orb ${app.tone}`}>{app.id==="passenger"?"↗":app.id==="partner"?"◇":"▦"}</div><div className="eyebrow">{app.tag} EXPERIENCE</div><h1>{app.label}</h1><p className="heroText">{app.desc}</p><div className="featurebox"><b>Ready to open</b><p>{app.id==="passenger"?"Home → People → Destination → Ride → Live Ride → Payment":app.id==="partner"?"Home → Online → New Ride → Accept → Start → Complete → Earnings":"Overview → Rides → Partners → Fleet → Routes → Institutions → Alerts"}</p><button className="primary" onClick={()=>window.open(url(app.port),"_blank","noopener,noreferrer")}>Open live prototype →</button></div><div className="note">The app opens in a separate browser tab. Keep this MILGI Demo tab open to return here.</div></main></div>}
+
+function Detail({app,back}){
+ return <div className="site detail">
+  <nav>
+   <button className="back" onClick={back}>← MILGI Demo</button>
+   <div className="navtag">{app.tag}</div>
+  </nav>
+  <main className="detailmain">
+   <div className={`orb ${app.tone}`}>{app.id==="passenger"?"↗":app.id==="partner"?"◇":"▦"}</div>
+   <div className="eyebrow">{app.tag} EXPERIENCE</div>
+   <h1>{app.label}</h1>
+   <p className="heroText">{app.desc}</p>
+   <div className="featurebox">
+    <b>Ready to open</b>
+    <p>{app.id==="passenger"?"Home → People → Destination → Ride → Live Ride → Payment":app.id==="partner"?"Home → Online → New Ride → Accept → Start → Complete → Earnings":"Overview → Rides → Partners → Fleet → Routes → Institutions → Alerts"}</p>
+    <button className="primary" onClick={()=>window.open(app.url,"_blank","noopener,noreferrer")}>Open live prototype →</button>
+   </div>
+   <div className="note">The app opens in a separate browser tab. Keep this MILGI Demo tab open to return here.</div>
+  </main>
+ </div>
+}
+
 createRoot(document.getElementById("root")).render(<App/>);
